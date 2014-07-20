@@ -46,7 +46,14 @@ class NetworkRequestHandler extends RequestHandler {
   }
 
   @Override @Nullable public Result load(Request request, int networkPolicy) throws IOException {
-    Response response = downloader.load(request.uri, request.networkPolicy);
+    Response response = null;
+    if (downloader instanceof ProgressDownloader) { 
+      response = ((ProgressDownloader)downloader).load(request.uri, request.networkPolicy, 
+        request.progressCallback != null ? request.progressCallback.get() : null);
+    } else {
+       response = downloader.load(request.uri, request.networkPolicy);
+    }
+
     if (response == null) {
       return null;
     }

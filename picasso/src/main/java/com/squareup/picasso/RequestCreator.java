@@ -41,8 +41,6 @@ import static com.squareup.picasso.Picasso.LoadedFrom.MEMORY;
 import static com.squareup.picasso.Picasso.Priority;
 import static com.squareup.picasso.PicassoDrawable.setBitmap;
 import static com.squareup.picasso.PicassoDrawable.setPlaceholder;
-import static com.squareup.picasso.RemoteViewsAction.AppWidgetAction;
-import static com.squareup.picasso.RemoteViewsAction.NotificationAction;
 import static com.squareup.picasso.Utils.OWNER_MAIN;
 import static com.squareup.picasso.Utils.VERB_CHANGED;
 import static com.squareup.picasso.Utils.VERB_COMPLETED;
@@ -51,6 +49,25 @@ import static com.squareup.picasso.Utils.checkMain;
 import static com.squareup.picasso.Utils.checkNotMain;
 import static com.squareup.picasso.Utils.createKey;
 import static com.squareup.picasso.Utils.log;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jetbrains.annotations.TestOnly;
+
+import android.app.Notification;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.widget.ImageView;
+import android.widget.RemoteViews;
+
+import com.squareup.picasso.RemoteViewsAction.AppWidgetAction;
+import com.squareup.picasso.RemoteViewsAction.NotificationAction;
 
 /** Fluent API for building an image download request. */
 @SuppressWarnings("UnusedDeclaration") // Public API.
@@ -317,6 +334,11 @@ public class RequestCreator {
   public RequestCreator transform(@NonNull Transformation transformation) {
     data.transform(transformation);
     return this;
+  }
+  
+  public RequestCreator progressCallback(WeakReference<ProgressCallback> progressCallback) {
+	  data.progressCallback(progressCallback);
+	  return this;
   }
 
   /**

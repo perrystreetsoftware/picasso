@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso.Priority;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.lang.ref.WeakReference;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -60,6 +61,8 @@ public final class Request {
   public final String stableKey;
   /** List of custom transformations to be applied after the built-in transformations. */
   public final List<Transformation> transformations;
+  /** Callback of progress we have made downloading the image **/
+  public final WeakReference<ProgressCallback> progressCallback;
   /** Target image width for resizing. */
   public final int targetWidth;
   /** Target image height for resizing. */
@@ -93,6 +96,7 @@ public final class Request {
   public final Priority priority;
 
   private Request(Uri uri, int resourceId, String stableKey, List<Transformation> transformations,
+      WeakReference<ProgressCallback> progressCallback, 
       int targetWidth, int targetHeight, boolean centerCrop, boolean centerInside,
       boolean onlyScaleDown, float rotationDegrees, float rotationPivotX, float rotationPivotY,
       boolean hasRotationPivot, boolean purgeable, Bitmap.Config config, Priority priority) {
@@ -104,6 +108,7 @@ public final class Request {
     } else {
       this.transformations = unmodifiableList(transformations);
     }
+    this.progressCallback = progressCallback;
     this.targetWidth = targetWidth;
     this.targetHeight = targetHeight;
     this.centerCrop = centerCrop;
@@ -217,6 +222,7 @@ public final class Request {
     private List<Transformation> transformations;
     private Bitmap.Config config;
     private Priority priority;
+    private WeakReference<ProgressCallback> progressCallback;
 
     /** Start building a request using the specified {@link Uri}. */
     public Builder(@NonNull Uri uri) {
@@ -455,6 +461,11 @@ public final class Request {
       transformations.add(transformation);
       return this;
     }
+    
+    public Builder progressCallback(WeakReference<ProgressCallback> callback) {
+    	progressCallback = callback;
+    	return this;
+    }
 
     /**
      * Add a list of custom transformations to be applied to the image.
@@ -487,7 +498,7 @@ public final class Request {
       if (priority == null) {
         priority = Priority.NORMAL;
       }
-      return new Request(uri, resourceId, stableKey, transformations, targetWidth, targetHeight,
+	    return new Request(uri, resourceId, stableKey, transformations, progressCallback, targetWidth, targetHeight,
           centerCrop, centerInside, onlyScaleDown, rotationDegrees, rotationPivotX, rotationPivotY,
           hasRotationPivot, purgeable, config, priority);
     }
