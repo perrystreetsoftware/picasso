@@ -42,8 +42,16 @@ class NetworkRequestHandler extends RequestHandler {
   }
 
   @Override public Result load(Request request, int networkPolicy) throws IOException {
+    Response response = null;
     okhttp3.Request downloaderRequest = createRequest(request, networkPolicy);
-    Response response = downloader.load(downloaderRequest);
+	
+    if (downloader instanceof ProgressDownloader) {
+      response = ((ProgressDownloader)downloader).load(downloaderRequest,
+							 request.progressCallback != null ? request.progressCallback.get() : null);
+    } else {
+      response = downloader.load(downloaderRequest);
+    }
+
     ResponseBody body = response.body();
 
     if (!response.isSuccessful()) {

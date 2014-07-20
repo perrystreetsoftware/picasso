@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -325,6 +326,11 @@ public class RequestCreator {
   public RequestCreator transform(@NonNull Transformation transformation) {
     data.transform(transformation);
     return this;
+  }
+
+  public RequestCreator progressCallback(WeakReference<ProgressCallback> progressCallback) {
+	  data.progressCallback(progressCallback);
+	  return this;
   }
 
   /**
