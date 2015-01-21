@@ -262,6 +262,11 @@ public class RequestCreator {
     data.centerCrop();
     return this;
   }
+  
+  public RequestCreator topCrop() {
+	  data.topCrop();
+	  return this;
+  }
 
   /**
    * Centers an image inside of the bounds specified by {@link #resize(int, int)}. This scales

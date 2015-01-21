@@ -73,6 +73,8 @@ public final class Request {
    * This is mutually exclusive with {@link #centerInside}.
    */
   public final boolean centerCrop;
+  public final boolean topCrop;
+  
   /**
    * True if the final image should use the 'centerInside' scale technique.
    * <p>
@@ -97,7 +99,7 @@ public final class Request {
 
   private Request(Uri uri, int resourceId, String stableKey, List<Transformation> transformations,
       WeakReference<ProgressCallback> progressCallback, 
-      int targetWidth, int targetHeight, boolean centerCrop, boolean centerInside,
+      int targetWidth, int targetHeight, boolean centerCrop, boolean topCrop, boolean centerInside,
       boolean onlyScaleDown, float rotationDegrees, float rotationPivotX, float rotationPivotY,
       boolean hasRotationPivot, boolean purgeable, Bitmap.Config config, Priority priority) {
     this.uri = uri;
@@ -112,6 +114,7 @@ public final class Request {
     this.targetWidth = targetWidth;
     this.targetHeight = targetHeight;
     this.centerCrop = centerCrop;
+    this.topCrop = topCrop;
     this.centerInside = centerInside;
     this.onlyScaleDown = onlyScaleDown;
     this.rotationDegrees = rotationDegrees;
@@ -143,6 +146,9 @@ public final class Request {
     }
     if (centerCrop) {
       builder.append(" centerCrop");
+    }
+    if (topCrop) {
+    	builder.append(" topCrop");
     }
     if (centerInside) {
       builder.append(" centerInside");
@@ -212,6 +218,7 @@ public final class Request {
     private int targetWidth;
     private int targetHeight;
     private boolean centerCrop;
+    private boolean topCrop;
     private boolean centerInside;
     private boolean onlyScaleDown;
     private float rotationDegrees;
@@ -247,6 +254,7 @@ public final class Request {
       targetWidth = request.targetWidth;
       targetHeight = request.targetHeight;
       centerCrop = request.centerCrop;
+      topCrop = request.topCrop;
       centerInside = request.centerInside;
       rotationDegrees = request.rotationDegrees;
       rotationPivotX = request.rotationPivotX;
@@ -334,6 +342,7 @@ public final class Request {
       targetWidth = 0;
       targetHeight = 0;
       centerCrop = false;
+      topCrop = false;
       centerInside = false;
       return this;
     }
@@ -344,7 +353,7 @@ public final class Request {
      * requested bounds and then crops the extra.
      */
     public Builder centerCrop() {
-      if (centerInside) {
+      if (centerInside || topCrop) {
         throw new IllegalStateException("Center crop can not be used after calling centerInside");
       }
       centerCrop = true;
@@ -357,12 +366,26 @@ public final class Request {
       return this;
     }
 
+    public Builder topCrop() {
+        if (centerInside || centerCrop) {
+          throw new IllegalStateException("Top crop can not be used after calling centerInside");
+        }
+        topCrop = true;
+        return this;
+      }
+
+      /** Clear the center crop transformation flag, if set. */
+      public Builder clearTopCrop() {
+        topCrop = false;
+        return this;
+      }
+      
     /**
      * Centers an image inside of the bounds specified by {@link #resize(int, int)}. This scales
      * the image so that both dimensions are equal to or less than the requested bounds.
      */
     public Builder centerInside() {
-      if (centerCrop) {
+      if (centerCrop || topCrop) {
         throw new IllegalStateException("Center inside can not be used after calling centerCrop");
       }
       centerInside = true;
@@ -499,7 +522,7 @@ public final class Request {
         priority = Priority.NORMAL;
       }
 	    return new Request(uri, resourceId, stableKey, transformations, progressCallback, targetWidth, targetHeight,
-          centerCrop, centerInside, onlyScaleDown, rotationDegrees, rotationPivotX, rotationPivotY,
+			       centerCrop, topCrop, centerInside, onlyScaleDown, rotationDegrees, rotationPivotX, rotationPivotY,
           hasRotationPivot, purgeable, config, priority);
     }
   }
