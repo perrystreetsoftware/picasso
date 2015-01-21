@@ -577,7 +577,7 @@ class BitmapHunter implements Runnable {
         }
       }
 
-      if (data.centerCrop) {
+      if (data.centerCrop || data.topCrop) {
         // Keep aspect ratio if one dimension is set to 0
         float widthRatio =
             targetWidth != 0 ? targetWidth / (float) inWidth : targetHeight / (float) inHeight;
@@ -615,6 +615,9 @@ class BitmapHunter implements Runnable {
         }
         if (shouldResize(onlyScaleDown, inWidth, inHeight, targetWidth, targetHeight)) {
           matrix.preScale(scaleX, scaleY);
+        }
+        if (data.topCrop) {
+        	drawY = 0;
         }
       } else if (data.centerInside) {
         // Keep aspect ratio if one dimension is set to 0

@@ -193,6 +193,8 @@ final class Utils {
     }
     if (data.centerCrop) {
       builder.append("centerCrop:").append(data.centerCropGravity).append(KEY_SEPARATOR);
+    } else if (data.topCrop) {
+      builder.append("topCrop").append(KEY_SEPARATOR);
     } else if (data.centerInside) {
       builder.append("centerInside").append(KEY_SEPARATOR);
     }

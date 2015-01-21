@@ -74,6 +74,8 @@ public final class Request {
   public final boolean centerCrop;
   /** If centerCrop is set, controls alignment of centered image */
   public final int centerCropGravity;
+  public final boolean topCrop;
+
   /**
    * True if the final image should use the 'centerInside' scale technique.
    * <p>
@@ -98,7 +100,7 @@ public final class Request {
 
   private Request(Uri uri, int resourceId, String stableKey, List<Transformation> transformations,
       WeakReference<ProgressCallback> progressCallback,
-      int targetWidth, int targetHeight, boolean centerCrop, boolean centerInside,
+      int targetWidth, int targetHeight, boolean centerCrop, boolean topCrop, boolean centerInside,
       int centerCropGravity, boolean onlyScaleDown, float rotationDegrees,
       float rotationPivotX, float rotationPivotY, boolean hasRotationPivot,
       boolean purgeable, Bitmap.Config config, Priority priority) {
@@ -114,6 +116,7 @@ public final class Request {
     this.targetWidth = targetWidth;
     this.targetHeight = targetHeight;
     this.centerCrop = centerCrop;
+    this.topCrop = topCrop;
     this.centerInside = centerInside;
     this.centerCropGravity = centerCropGravity;
     this.onlyScaleDown = onlyScaleDown;
@@ -146,6 +149,9 @@ public final class Request {
     }
     if (centerCrop) {
       builder.append(" centerCrop");
+    }
+    if (topCrop) {
+    	builder.append(" topCrop");
     }
     if (centerInside) {
       builder.append(" centerInside");
@@ -216,6 +222,7 @@ public final class Request {
     private int targetHeight;
     private boolean centerCrop;
     private int centerCropGravity;
+    private boolean topCrop;
     private boolean centerInside;
     private boolean onlyScaleDown;
     private float rotationDegrees;
@@ -251,6 +258,7 @@ public final class Request {
       targetWidth = request.targetWidth;
       targetHeight = request.targetHeight;
       centerCrop = request.centerCrop;
+      topCrop = request.topCrop;
       centerInside = request.centerInside;
       centerCropGravity = request.centerCropGravity;
       rotationDegrees = request.rotationDegrees;
@@ -339,6 +347,7 @@ public final class Request {
       targetWidth = 0;
       targetHeight = 0;
       centerCrop = false;
+      topCrop = false;
       centerInside = false;
       return this;
     }
@@ -358,7 +367,7 @@ public final class Request {
      * requested bounds, aligns it using provided gravity parameter and then crops the extra.
      */
     public Builder centerCrop(int alignGravity) {
-      if (centerInside) {
+      if (centerInside || topCrop) {
         throw new IllegalStateException("Center crop can not be used after calling centerInside");
       }
       centerCrop = true;
@@ -373,12 +382,26 @@ public final class Request {
       return this;
     }
 
+    public Builder topCrop() {
+        if (centerInside || centerCrop) {
+          throw new IllegalStateException("Top crop can not be used after calling centerInside");
+        }
+        topCrop = true;
+        return this;
+      }
+
+      /** Clear the center crop transformation flag, if set. */
+      public Builder clearTopCrop() {
+        topCrop = false;
+        return this;
+      }
+
     /**
      * Centers an image inside of the bounds specified by {@link #resize(int, int)}. This scales
      * the image so that both dimensions are equal to or less than the requested bounds.
      */
     public Builder centerInside() {
-      if (centerCrop) {
+      if (centerCrop || topCrop) {
         throw new IllegalStateException("Center inside can not be used after calling centerCrop");
       }
       centerInside = true;
@@ -515,7 +538,7 @@ public final class Request {
         priority = Priority.NORMAL;
       }
 	    return new Request(uri, resourceId, stableKey, transformations, progressCallback, targetWidth, targetHeight,
-          centerCrop, centerInside, centerCropGravity, onlyScaleDown, rotationDegrees,
+          centerCrop, topCrop, centerInside, centerCropGravity, onlyScaleDown, rotationDegrees,
           rotationPivotX, rotationPivotY, hasRotationPivot, purgeable, config, priority);
     }
   }
