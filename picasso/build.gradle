@@ -18,6 +18,7 @@ android {
   lintOptions {
     textOutput 'stdout'
     textReport true
+    abortOnError false
   }
 
   dexOptions {
@@ -35,6 +36,7 @@ dependencies {
   provided dep.okhttp
   provided dep.okhttp3
   compile dep.supportAnnotations
+  compile dep.intellijAnnotations
   testCompile dep.junit
   testCompile dep.fest
   testCompile dep.festAndroid
@@ -44,4 +46,4 @@ dependencies {
   testCompile dep.mockWebServer
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+// apply from: rootProject.file('Dependencies/Lib/picasso/gradle/gradle-mvn-push.gradle')
