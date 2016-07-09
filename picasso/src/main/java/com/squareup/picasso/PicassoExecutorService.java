@@ -79,13 +79,14 @@ class PicassoExecutorService extends ThreadPoolExecutor {
   }
 
   private void setThreadCount(int threadCount) {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-      setMaximumPoolSize(threadCount);
+    // es removed: https://github.com/square/picasso/issues/1422
+//    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+//      setMaximumPoolSize(threadCount);
+//      setCorePoolSize(threadCount);
+//    } else {
       setCorePoolSize(threadCount);
-    } else {
-      setCorePoolSize(threadCount);
       setMaximumPoolSize(threadCount);
-    }
+//    }
   }
 
   @Override
