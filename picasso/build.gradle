@@ -1,4 +1,8 @@
 buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
   dependencies {
     classpath dep.androidPlugin
   }
