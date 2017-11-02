@@ -4,7 +4,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath dep.androidPlugin
+    classpath "com.android.tools.build:gradle:$gradlePluginVersion"
   }
 }
 
@@ -30,24 +30,24 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion rootProject.ext.minLegacySdkVersion
+    minSdkVersion 14
 
     consumerProguardFiles 'consumer-proguard-rules.txt'
   }
 }
 
 dependencies {
-  provided dep.okhttp
-  provided dep.okhttp3
-  compile dep.supportAnnotations
-  compile dep.intellijAnnotations
-  testCompile dep.junit
-  testCompile dep.fest
-  testCompile dep.festAndroid
-  testCompile dep.supportV4
-  testCompile dep.robolectric
-  testCompile dep.mockito
-  testCompile dep.mockWebServer
+  compileOnly "com.squareup.okhttp:okhttp:$okHttpVersion"
+  compileOnly "com.squareup.okhttp3:okhttp:$okHttp3Version"
+  implementation "com.android.support:support-annotations:$supportLibraryVersion"
+  implementation "com.intellij:annotations:$intellijAnnotationsVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "org.easytesting:fest-assert-core:$festVersion"
+  testImplementation "com.squareup:fest-android:$festAndroidVersion"
+  testImplementation "com.android.support:support-v4:$supportLibraryVersion"
+  testImplementation "org.robolectric:robolectric:$robolectricVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation "com.squareup.okhttp3:mockwebserver:$okHttp3Version"
 }
 
 // apply from: rootProject.file('Dependencies/Lib/picasso/gradle/gradle-mvn-push.gradle')

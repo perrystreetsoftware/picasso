@@ -27,5 +27,3 @@ subprojects {
     tasks.findByName('check').dependsOn('checkstyle')
   }
 }
-
-apply from: rootProject.file('dependencies.gradle')
