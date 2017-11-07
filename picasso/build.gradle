@@ -1,6 +1,10 @@
 buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
   dependencies {
-    classpath dep.androidPlugin
+    classpath "com.android.tools.build:gradle:$gradlePluginVersion"
   }
 }
 
@@ -33,14 +37,14 @@ android {
 }
 
 dependencies {
-  api dep.okhttp
-  compileOnly dep.supportAnnotations
-  testImplementation dep.junit
-  testImplementation dep.truth
-  testImplementation dep.supportV4
-  testImplementation dep.robolectric
-  testImplementation dep.mockito
-  testImplementation dep.mockWebServer
+  api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  compileOnly "com.android.support:support-annotations:$supportLibraryVersion"
+  testImplementation "junit:junit:$junitVersion"
+  testImplementation "com.google.truth:truth:$truthVersion"
+  testImplementation "com.android.support:support-v4:$supportLibraryVersion"
+  testImplementation "org.robolectric:robolectric:$robolectricVersion"
+  testImplementation "org.mockito:mockito-core:$mockitoVersion"
+  testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+//apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
