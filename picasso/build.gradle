@@ -38,10 +38,10 @@ android {
 
 dependencies {
   api "com.squareup.okhttp3:okhttp:$okhttpVersion"
-  compileOnly "com.android.support:support-annotations:$supportLibraryVersion"
+  compileOnly "androidx.annotation:annotation:1.0.0-beta01"
   testImplementation "junit:junit:$junitVersion"
   testImplementation "com.google.truth:truth:$truthVersion"
-  testImplementation "com.android.support:support-v4:$supportLibraryVersion"
+  testImplementation "androidx.legacy:legacy-support-v4:1.0.0-beta01"
   testImplementation "org.robolectric:robolectric:$robolectricVersion"
   testImplementation "org.mockito:mockito-core:$mockitoVersion"
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
