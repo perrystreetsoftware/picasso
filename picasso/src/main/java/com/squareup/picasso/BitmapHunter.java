@@ -483,15 +483,22 @@ class BitmapHunter implements Runnable {
       }
 
       // If the transformation returned a new bitmap ensure they recycled the original.
-      if (newResult != result && !result.isRecycled()) {
-        Picasso.HANDLER.post(new Runnable() {
-          @Override public void run() {
-            throw new IllegalStateException("Transformation "
-                + transformation.key()
-                + " mutated input Bitmap but failed to recycle the original.");
+
+      // Don't do this check temporarily in Android P or higher because some Huawei
+      // devices running P throw an exception even if the source bitmap is recycled.
+      // (Recycling the bitmap is not needed in newer Android versions anyway)
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+          if (newResult != result && !result.isRecycled()) {
+              Picasso.HANDLER.post(new Runnable() {
+                  @Override
+                  public void run() {
+                      throw new IllegalStateException("Transformation "
+                              + transformation.key()
+                              + " mutated input Bitmap but failed to recycle the original.");
+                  }
+              });
+              return null;
           }
-        });
-        return null;
       }
 
       result = newResult;
