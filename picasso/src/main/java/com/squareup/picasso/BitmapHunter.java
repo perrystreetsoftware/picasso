@@ -483,10 +483,14 @@ class BitmapHunter implements Runnable {
       }
 
       // If the transformation returned a new bitmap ensure they recycled the original.
-
+      //
       // Don't do this check temporarily in Android P or higher because some Huawei
       // devices running P throw an exception even if the source bitmap is recycled.
       // (Recycling the bitmap is not needed in newer Android versions anyway)
+      //
+      // This has been already fixed in Picasso 3 by simply removing the check
+      // Discussion: https://github.com/square/picasso/issues/2055
+      // Fix: https://github.com/square/picasso/pull/2062/commits/ebc2d2cd644f805b65cd949fa2988ee3bb9353b8
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
           if (newResult != result && !result.isRecycled()) {
               Picasso.HANDLER.post(new Runnable() {
