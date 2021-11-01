@@ -47,4 +47,6 @@ dependencies {
   testImplementation "com.squareup.okhttp3:mockwebserver:$okhttpVersion"
 }
 
+// TODO upgrade picasso and use latest gradle configurations
+// TODO https://www.pivotaltracker.com/story/show/179398618
 //apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

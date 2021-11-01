@@ -39,4 +39,6 @@ dependencies {
   testImplementation dep.pollexor
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+// TODO upgrade picasso and use latest gradle configurations
+// TODO https://www.pivotaltracker.com/story/show/179398618
+// apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
