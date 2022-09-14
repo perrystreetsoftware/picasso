@@ -2,7 +2,7 @@ buildscript {
   repositories {
     mavenCentral()
     jcenter()
-      google()
+    google()
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:3.6.3'
@@ -12,11 +12,11 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion 30
 
   compileOptions {
-    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility rootProject.ext.targetCompatibilityVersion
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   lintOptions {
@@ -25,12 +25,8 @@ android {
     lintConfig file('lint.xml')
   }
 
-  dexOptions {
-    preDexLibraries = !rootProject.ext.isCi
-  }
-
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
+    minSdkVersion 21
 
     consumerProguardFiles 'consumer-proguard-rules.txt'
   }
