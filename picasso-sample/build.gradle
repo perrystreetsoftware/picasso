@@ -1,6 +1,6 @@
 buildscript {
   dependencies {
-    classpath dep.androidPlugin
+    classpath 'com.android.tools.build:gradle:3.6.3'
   }
 }
 
@@ -13,11 +13,11 @@ dependencies {
 }
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion 32
 
   compileOptions {
-    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility rootProject.ext.targetCompatibilityVersion
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   lintOptions {
@@ -29,13 +29,9 @@ android {
     ignore 'InvalidPackage'
   }
 
-  dexOptions {
-    preDexLibraries = !rootProject.ext.isCi
-  }
-
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
+    minSdkVersion 21
+    targetSdkVersion 31
     applicationId 'com.example.picasso'
 
     versionCode 1
