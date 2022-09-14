@@ -1,17 +1,17 @@
 buildscript {
   dependencies {
-    classpath dep.androidPlugin
+    classpath 'com.android.tools.build:gradle:3.6.3'
   }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
+  compileSdkVersion 30
 
   compileOptions {
-    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility rootProject.ext.targetCompatibilityVersion
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
   }
 
   lintOptions {
@@ -20,12 +20,8 @@ android {
     lintConfig file('lint.xml')
   }
 
-  dexOptions {
-    preDexLibraries = !rootProject.ext.isCi
-  }
-
   defaultConfig {
-    minSdkVersion rootProject.ext.minSdkVersion
+    minSdkVersion 21
   }
 }
 
@@ -38,7 +34,3 @@ dependencies {
   testImplementation dep.truth
   testImplementation dep.pollexor
 }
-
-// TODO upgrade picasso and use latest gradle configurations
-// TODO https://www.pivotaltracker.com/story/show/179398618
-// apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
