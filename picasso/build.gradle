@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
+  namespace 'com.squareup.picasso'
   compileSdkVersion 32
 
   compileOptions {
