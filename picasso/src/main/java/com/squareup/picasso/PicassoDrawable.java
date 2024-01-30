@@ -90,7 +90,7 @@ final class PicassoDrawable extends BitmapDrawable {
   }
 
   @Override public void draw(Canvas canvas) {
-    if (getBitmap().isRecycled()) {
+    if (getBitmap() != null && getBitmap().isRecycled()) {
       return;
     }
 
