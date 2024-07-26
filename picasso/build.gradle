@@ -1,45 +1,25 @@
-buildscript {
-  repositories {
-    mavenCentral()
-    jcenter()
-    google()
-  }
-  dependencies {
-    classpath 'com.android.tools.build:gradle:7.2.2'
-  }
+plugins {
+    alias libs.plugins.android.library
 }
 
-apply plugin: 'com.android.library'
-
 android {
-  namespace 'com.squareup.picasso'
-  compileSdkVersion 32
+    namespace 'com.squareup.picasso'
 
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
+    compileSdk libs.versions.android.sdk.compile.get().toInteger()
+    defaultConfig {
+        minSdkVersion libs.versions.android.sdk.min.get()
+        targetSdkVersion libs.versions.android.sdk.target.get()
+        consumerProguardFiles 'consumer-proguard-rules.txt'
+    }
 
-  lintOptions {
-    textOutput 'stdout'
-    textReport true
-    lintConfig file('lint.xml')
-  }
-
-  defaultConfig {
-    minSdkVersion 21
-
-    consumerProguardFiles 'consumer-proguard-rules.txt'
-  }
+    lintOptions {
+        textOutput 'stdout'
+        textReport true
+        lintConfig file('lint.xml')
+    }
 }
 
 dependencies {
-  api "com.squareup.okhttp3:okhttp:4.9.0"
-  compileOnly "androidx.annotation:annotation:1.0.0-beta01"
-  testImplementation "junit:junit:4.13.2"
-  testImplementation "com.google.truth:truth:0.36"
-  testImplementation "androidx.legacy:legacy-support-v4:1.0.0-beta01"
-  testImplementation "org.robolectric:robolectric:2.2"
-  testImplementation "org.mockito:mockito-core:3.4.6"
-  testImplementation "com.squareup.okhttp3:mockwebserver:4.9.0"
+    api libs.square.okhttp
+    compileOnly libs.androidx.annotation
 }
